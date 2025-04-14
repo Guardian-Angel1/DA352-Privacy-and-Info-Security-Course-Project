@@ -1,142 +1,268 @@
-# DA352-Privacy-and-Info-Security-Course-Project
 
-This project implements the **Diffie-Hellman key exchange** protocol using the [GMP (GNU Multi‑Precision)](https://gmplib.org/) library in C, along with **HKDF** for key derivation. It uses GMP and OpenSSL libraries in C/C++ on Windows under MSYS2.
 
-## 📁 File Structure
 
-| File                         | Description |
-|------------------------------|-------------|
-| `diffie-hellman.h`           | Header file containing declarations, macros, and global variables for key exchange. |
-| `diffie-hellman.c`           | Implementation of the Diffie-Hellman protocol and key derivation logic. |
-| `diffie-hellman-example.c`   | Example usage: generates key pairs, exchanges keys, and prints derived key. |
-| `Makefile`                   | Build script for Windows (MinGW or compatible GCC) with `make`. |
+# DA352 Privacy and Information Security Course Project
+
+A secure, cross-platform chat application demonstrating **Diffie-Hellman key exchange** and **HKDF-based symmetric key derivation** using C/C++ (GMP and OpenSSL). This project is designed for educational purposes, showcasing how two parties can establish a shared secret and communicate securely over an insecure network.
 
 ---
 
-## 🧠 Mathematical Background
+## Table of Contents
 
-The **Diffie-Hellman (DH)** key exchange is a cryptographic protocol that allows two parties (e.g., Alice and Bob) to establish a **shared secret** over a public channel, without ever transmitting the secret directly.
+- [Project Overview](#project-overview)
+- [Mathematical Foundations](#mathematical-foundations)
+- [Features](#features)
+- [File Structure](#file-structure)
+- [Build Instructions](#build-instructions)
+- [Command-Line Usage](#command-line-usage)
+- [Usage Examples](#usage-examples)
+- [Security Notes](#security-notes)
+- [Troubleshooting](#troubleshooting)
+- [References](#references)
 
-### 📌 Parameters
+---
 
-Let the following be public:
+## Project Overview
 
-- **p**: a large prime such that `p = 2q + 1`, where `q` is also a prime.
-- **q**: a large prime factor of `p − 1`, typically 256 bits.
-- **g**: a generator of the cyclic subgroup of order `q` in `ℤ_p*`.
+This project implements a secure chat system using the Diffie-Hellman (DH) key exchange protocol for establishing a shared secret, and HKDF (HMAC-based Key Derivation Function) for deriving a strong symmetric key. The derived key is then used to encrypt and decrypt chat messages between a server and a client.
 
-These values are either:
-- Loaded from a file using `init("dhparams.txt")`, or
-- Generated from scratch using `initFromScratch(qBits, pBits)` (slow, used once).
+---
+
+## Mathematical Foundations
+
+# 🔐 Diffie-Hellman Key Exchange with HKDF
+
+This project demonstrates a basic implementation of the **Diffie-Hellman Key Exchange** protocol, combined with **HKDF** (HMAC-based Key Derivation Function) using HMAC-SHA256 to derive a strong symmetric key from the shared secret.
+
+---
+
+## 📘 1. Diffie-Hellman Key Exchange
+
+# 🔐 Diffie-Hellman Key Exchange with HKDF
+
+This project demonstrates a basic implementation of the **Diffie-Hellman Key Exchange** protocol, combined with **HKDF** (HMAC-based Key Derivation Function) using HMAC-SHA256 to derive a strong symmetric key from the shared secret.
+
+---
+
+## 📘 1. Diffie-Hellman Key Exchange
+
+The DH protocol allows two parties to securely agree on a shared secret over an insecure channel. Its security relies on the hardness of the **Discrete Logarithm Problem**.
+
+### 🔧 Parameters
+
+- **Safe prime `p`**: A large prime number (usually ≥ 2048 bits)
+- **Prime `q`**: Such that `p = 2q + 1`
+- **Generator `g`**: Generator of a subgroup of order `q` in `Z_p*`
 
 ### 🔐 Key Generation
 
-Each party generates:
-- A private key `a ∈ [1, q−1]` (chosen randomly)
-- A public key `A = g^a mod p`
+Each party:
 
-In code (for Alice):
-```c
-dhGen(a, A);  // Generates private key a and public key A = g^a mod p
-```
+- Chooses a private key `a` (or `b`), where `1 ≤ a < q`
+- Computes the public key:
 
-### 🔁 Shared Secret Computation
+  ```
+  A = g^a mod p
+  B = g^b mod p
+  ```
 
-After public keys are exchanged:
-- Alice computes `S = B^a mod p`
-- Bob computes `S = A^b mod p`
+### 🔁 Shared Secret
 
-Since:
-```
-A = g^a mod p
-B = g^b mod p
-```
-Both compute:
-```
-S = g^(ab) mod p
-```
+After exchanging public keys:
 
-So the shared secret `S` is identical for both.
+- Both compute the same shared secret:
 
-### 🔑 Key Derivation using HKDF
-
-The raw shared secret `S` is not used directly as a key. Instead, it's processed using **HKDF** (HMAC-based Key Derivation Function) with **HMAC-SHA256** to produce a cryptographically strong, fixed-length key suitable for symmetric encryption.
-
-In code:
-```c
-dhFinal(a, A, B, kA, klen);  // Alice's derived key
-dhFinal(b, B, A, kB, klen);  // Bob's derived key
-```
-
-This ensures the derived key has high entropy and is secure for further cryptographic use.
-
+  ```
+  S = B^a mod p = A^b mod p = g^(ab) mod p
+  ```
 
 ---
-## ⚙️ How to Build and Run (on Windows using MSYS2)
 
-### 🧰 Step 1: Install MSYS2
+## 🔑 2. HKDF (HMAC-based Key Derivation Function)
 
-Download and install MSYS2 from: https://www.msys2.org/
+The raw shared secret `S` is passed through HKDF using `HMAC-SHA256` to derive a cryptographically strong symmetric key.
 
-### 🧪 Step 2: Open MSYS2 terminal (MinGW 64-bit)
+### ✂️ Extract
 
-Launch **`MSYS2 MinGW 64-bit`** from the Start menu. This is important to get access to the correct compiler and libraries.
-
-### 🔄 Step 3: Update MSYS2 and package database
-
-```bash
-pacman -Syu
+```
+PRK = HMAC(salt, S)
 ```
 
-> 🔁 If prompted to restart the terminal after core update, do so.
+### ➕ Expand
 
-Then complete the update:
-
-```bash
-pacman -Su
+```
+OKM = HMAC(PRK, info || counter)
 ```
 
-### 📦 Step 4: Install required libraries and build tools
+
+
+
+
+## Features
+
+- **Secure Key Exchange:** Uses DH with safe primes and secure random number generation.
+- **Key Derivation:** HKDF with HMAC-SHA256 for strong symmetric keys.
+- **Encrypted Chat:** All messages are encrypted using the derived key.
+- **Cross-Platform:** Designed for Windows (MSYS2/MinGW), easily portable to Linux.
+- **Simple CLI:** Start as server or client with easy command-line options.
+
+---
+
+## File Structure
+
+| File | Description |
+| :-- | :-- |
+| `diffie-hellman.h` | DH and HKDF function declarations |
+| `diffie-hellman.c` | DH and HKDF implementation |
+| `diffie-hellman-example.c` | Example/test for DH key exchange |
+| `chat.c` / `chat.cpp` | Main chat application (server/client) |
+| `Makefile` | Build script for MSYS2/MinGW |
+
+---
+
+## Build Instructions
+
+### Prerequisites
+
+- **MSYS2/MinGW (Windows):** [Install MSYS2](https://www.msys2.org/)
+- **GMP and OpenSSL:** Install via MSYS2 terminal:
 
 ```bash
-pacman -S \
-  mingw-w64-x86_64-toolchain \
-  mingw-w64-x86_64-gmp \
-  mingw-w64-x86_64-openssl
+pacman -S mingw-w64-x86_64-gmp mingw-w64-x86_64-openssl
 ```
 
-This installs:
-- GCC toolchain (`gcc`, `make`)
-- GMP library (`-lgmp`)
-- OpenSSL (`-lssl`, `-lcrypto`, `-lbcrypt`)
 
-### 📥 Step 5: Clone the repository
+### Build Steps
 
 ```bash
-git clone https://github.com/<your-username>/DA352-Privacy-and-Info-Security-Course-Project.git
+# Clone the repository
+git clone https://github.com/raunitpatel/DA352-Privacy-and-Info-Security-Course-Project.git
 cd DA352-Privacy-and-Info-Security-Course-Project
-```
 
-### 📂 Step 6: Navigate to your project directory
-
-```bash
-cd /c/Users/<your-username>/path/to/DA352-Privacy-and-Info-Security-Course-Project
-```
-
-### 🛠️ Step 7: Build the project
-
-```bash
+# Build the project
 make
 ```
 
-### 🚀 Step 8: Run the program
+This will produce `chat.exe` and `diffie-hellman.exe` in the project directory.
+
+---
+
+## Command-Line Usage
+
+The application supports the following arguments:
+
+
+| Long Option | Short Flag | Argument | Description |
+| :-- | :-- | :-- | :-- |
+| `--connect` | `-c` | `&lt;SERVER_IP&gt;` | Connect as client to the specified IP |
+| `--listen` | `-l` | None | Start in server/listen mode |
+| `--port` | `-p` | `&lt;PORT&gt;` | Port number (required for both modes) |
+| `--help` | `-h` | None | Show help message |
+
+### Usage Patterns
 
 ```bash
-./diffie-hellman.exe
+# Start the server (listening mode)
+./chat.exe --listen --port &lt;PORT&gt;
+# or using short flags
+./chat.exe -l -p &lt;PORT&gt;
+
+# Start the client (connect to server)
+./chat.exe --connect &lt;SERVER_IP&gt; --port &lt;PORT&gt;
+# or using short flags
+./chat.exe -c &lt;SERVER_IP&gt; -p &lt;PORT&gt;
+
+# Display help
+./chat.exe --help
+# or
+./chat.exe -h
 ```
 
-### 🧹 Step 9: Clean the build (optional)
+---
+
+## Usage Examples
+
+### 1. Start a Server on Port 1337
 
 ```bash
-make clean
+./chat.exe -l -p 1337
 ```
+
+**Output:**
+
+```
+[SERVER] Listening on 0.0.0.0:1337
+[DH] Parameters initialized. Waiting for client...
+```
+
+
+### 2. Connect as a Client to `192.168.1.100:1337`
+
+```bash
+./chat.exe -c 192.168.1.100 -p 1337
+```
+
+**Output:**
+
+```
+[CLIENT] Connecting to 192.168.1.100:1337...
+[DH] Shared secret derived. Secure channel ready.
+&gt; 
+```
+
+
+### 3. Show Help
+
+```bash
+./chat.exe -h
+```
+
+**Output:**
+
+```
+Usage: chat.exe [OPTIONS]
+Options:
+  -c, --connect &lt;IP&gt;  Connect to server at specified IP
+  -l, --listen        Start in server mode
+  -p, --port &lt;PORT&gt;   Port number (required)
+  -h, --help          Show this help
+```
+
+
+### 4. Chatting
+
+- After connection, both sides perform DH key exchange and derive a shared AES-256 key.
+- All messages are encrypted and decrypted automatically.
+- Type messages and press Enter to send.
+- Use `/exit` to leave the chat.
+
+---
+
+## Security Notes
+
+- **Private keys** are never transmitted; only public keys are exchanged.
+- **Ephemeral keys**: Each session uses fresh keys for forward secrecy.
+- **HKDF** ensures the derived key is suitable for symmetric encryption.
+- **No authentication**: This demo does not prevent man-in-the-middle attacks. For real-world use, add authentication (e.g., digital signatures or certificates).
+
+---
+
+## Troubleshooting
+
+- **Port already in use:** Use a different port or close other applications using the port.
+- **Firewall issues:** Allow `chat.exe` through your firewall.
+- **OpenSSL errors:** Ensure `libcrypto-3-x64.dll` is in your PATH (Windows).
+- **GMP errors:** Ensure `libgmp-10.dll` is in your PATH (Windows).
+- **Missing arguments:** Run `./chat.exe -h` for usage instructions.
+
+---
+
+## References
+
+- [Diffie-Hellman Key Exchange (Wikipedia)](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange)
+- [RFC 5869: HKDF](https://datatracker.ietf.org/doc/html/rfc5869)
+- [GMP Library](https://gmplib.org/)
+- [OpenSSL Documentation](https://www.openssl.org/docs/)
+- [MSYS2 Project](https://www.msys2.org/)
+
+
