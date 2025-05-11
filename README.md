@@ -152,33 +152,14 @@ This will produce `chat.exe` and `diffie-hellman.exe` in the project directory.
 The application supports the following arguments:
 
 
-| Long Option | Short Flag | Argument | Description |
-| :-- | :-- | :-- | :-- |
-| `--connect` | `-c` | `&lt;SERVER_IP&gt;` | Connect as client to the specified IP |
-| `--listen` | `-l` | None | Start in server/listen mode |
-| `--port` | `-p` | `&lt;PORT&gt;` | Port number (required for both modes) |
-| `--help` | `-h` | None | Show help message |
+| Long Option | Short Flag | Description |
+| :-- | :-- | :-- |
+| `--connect` | `-c` | Connect as client to the specified IP |
+| `--listen` | `-l` | Start in server/listen mode |
+| `--port` | `-p` | Port number (required for both modes) |
+| `--help` | `-h` | Show help message |
 
-### Usage Patterns
 
-```bash
-# Start the server (listening mode)
-./chat.exe --listen --port &lt;PORT&gt;
-# or using short flags
-./chat.exe -l -p &lt;PORT&gt;
-
-# Start the client (connect to server)
-./chat.exe --connect &lt;SERVER_IP&gt; --port &lt;PORT&gt;
-# or using short flags
-./chat.exe -c &lt;SERVER_IP&gt; -p &lt;PORT&gt;
-
-# Display help
-./chat.exe --help
-# or
-./chat.exe -h
-```
-
----
 
 ## Usage Examples
 
