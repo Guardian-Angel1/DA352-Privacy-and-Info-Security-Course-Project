@@ -30,7 +30,7 @@ Sahil Raj - 220150018
 
 ## Project Overview
 
-This project implements a secure chat system using the Diffie-Hellman (DH) key exchange protocol for establishing a shared secret and HKDF (HMAC-based Key Derivation Function) for deriving a strong symmetric key. The derived key is then used to encrypt and decrypt chat messages between a server and a client.
+This project implements a secure chat system using the Diffie-Hellman (DH) key exchange protocol for establishing a shared secret and HKDF (HMAC-based Key Derivation Function) for deriving a strong symmetric key. The derived key is then used to encrypt and decrypt chat messages between a server and a client.<br>
 Watch the demonstration on <a href="https://youtu.be/5AUH06ikrfw" target="_blank">YouTube</a>.
 
 ---
