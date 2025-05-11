@@ -3,7 +3,7 @@
 
 # DA352 Privacy and Information Security Course Project
 
-A secure, cross-platform chat application demonstrating **Diffie-Hellman key exchange** and **HKDF-based symmetric key derivation** using C/C++ (GMP and OpenSSL). This project is designed for educational purposes, showcasing how two parties can establish a shared secret and communicate securely over an insecure network.
+A secure, cross-platform chat application demonstrating **Diffie-Hellman key exchange** and **HKDF-based symmetric key derivation** using C/C++ (GMP and OpenSSL). This project showcases how two parties can establish a shared secret and communicate securely over an insecure network.
 
 ---
 
