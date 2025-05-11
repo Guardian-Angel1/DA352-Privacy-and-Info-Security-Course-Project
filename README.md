@@ -23,10 +23,10 @@ A secure, cross-platform chat application demonstrating **Diffie-Hellman key exc
 ---
 
 ## Team Members
-Raunit Patel - 220150015
-Prakhar Punj - 	220150011
-Shinde Onkar Harishchandra - 220150021
-Sahil Raj - 220150018
+Raunit Patel - 220150015 <br>
+Prakhar Punj - 	220150011 <br>
+Shinde Onkar Harishchandra - 220150021 <br>
+Sahil Raj - 220150018 <br>
 
 ## Project Overview
 
