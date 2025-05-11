@@ -8,7 +8,7 @@ A secure, cross-platform chat application demonstrating **Diffie-Hellman key exc
 ---
 
 ## Table of Contents
-
+- [Team Members](#team-members)
 - [Project Overview](#project-overview)
 - [Mathematical Foundations](#mathematical-foundations)
 - [Features](#features)
@@ -22,9 +22,16 @@ A secure, cross-platform chat application demonstrating **Diffie-Hellman key exc
 
 ---
 
+## Team Members
+Raunit Patel - 220150015
+Prakhar Punj - 	220150011
+Shinde Onkar Harishchandra - 220150021
+Sahil Raj - 220150018
+
 ## Project Overview
 
-This project implements a secure chat system using the Diffie-Hellman (DH) key exchange protocol for establishing a shared secret, and HKDF (HMAC-based Key Derivation Function) for deriving a strong symmetric key. The derived key is then used to encrypt and decrypt chat messages between a server and a client.
+This project implements a secure chat system using the Diffie-Hellman (DH) key exchange protocol for establishing a shared secret and HKDF (HMAC-based Key Derivation Function) for deriving a strong symmetric key. The derived key is then used to encrypt and decrypt chat messages between a server and a client.
+Watch the demonstration on <a href="https://youtu.be/5AUH06ikrfw" target="_blank">YouTube</a>.
 
 ---
 
