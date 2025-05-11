@@ -166,30 +166,16 @@ The application supports the following arguments:
 ### 1. Start a Server on Port 1337
 
 ```bash
-./chat.exe -l -p 1337
-```
-
-**Output:**
-
-```
-[SERVER] Listening on 0.0.0.0:1337
-[DH] Parameters initialized. Waiting for client...
+./chat.exe -l 1337
 ```
 
 
-### 2. Connect as a Client to `192.168.1.100:1337`
+### 2. Connect as a Client to port 1337
 
 ```bash
-./chat.exe -c 192.168.1.100 -p 1337
+./chat.exe -p 1337
 ```
 
-**Output:**
-
-```
-[CLIENT] Connecting to 192.168.1.100:1337...
-[DH] Shared secret derived. Secure channel ready.
-&gt; 
-```
 
 
 ### 3. Show Help
