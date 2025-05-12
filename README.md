@@ -23,8 +23,8 @@ A secure, cross-platform chat application demonstrating **Diffie-Hellman key exc
 ---
 
 ## Team Members
-Raunit Patel - 220150015 <br>
 Prakhar Punj - 	220150011 <br>
+Raunit Patel - 220150015 <br>
 Shinde Onkar Harishchandra - 220150021 <br>
 Sahil Raj - 220150018 <br>
 
@@ -205,7 +205,7 @@ Options:
 
 ### 4. Chatting
 
-- After connection, both sides perform DH key exchange and derive a shared AES-256 key.
+- After connection, both sides perform Diffie Hellman key exchange and derive a shared AES-256 key.
 - All messages are encrypted and decrypted automatically.
 - Type messages and press Enter to send.
 - Use `/exit` to leave the chat.
